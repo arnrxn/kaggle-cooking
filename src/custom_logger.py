@@ -20,8 +20,9 @@ def setup_logger(name: str, log_level: int = DEBUG) -> logging.Logger:
     :return: Configured Logger object.
 
     Usage:
-        from app_logger import get_logger, INFO
-        logger = get_logger('example_module', log_level=INFO)
+        from src.custom_logger import setup_logger, INFO
+        logger = setup_logger('example_module', log_level=INFO)
+        logger.info('This is an info message.')
     """
 
     # Create a logger

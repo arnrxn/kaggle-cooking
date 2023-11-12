@@ -13,13 +13,13 @@ def main():
 
     try:
         # Load train and test data
-        logger.info("Loading training and test data...")
+        logger.debug("Loading training and test data...")
         train_data = pd.read_json("data/raw/train.json")
         test_data = pd.read_json("data/raw/test.json")
-        logger.info("Data loaded successfully.")
+        logger.debug("Data loaded successfully.")
 
         # Combine ingredients into a single string for vectorization
-        logger.info("Combining ingredients into a single string for vectorization...")
+        logger.debug("Combining ingredients into a single string for vectorization...")
         train_data["ingredients_str"] = train_data["ingredients"].apply(
             lambda x: ",".join(x)
         )
@@ -35,17 +35,17 @@ def main():
         X_test = test_data["ingredients_str"]
 
         # Split the full training data into training and validation sets
-        logger.info("Splitting data into training and validation sets...")
+        logger.debug("Splitting data into training and validation sets...")
         X_train, X_val, y_train, y_val = train_test_split(
             X_train_full, y_train_full, test_size=0.2, random_state=42
         )
 
         # Create a Bag of Words model using CountVectorizer
-        logger.info("Creating Bag of Words model...")
+        logger.debug("Creating Bag of Words model...")
         vectorizer = CountVectorizer()
 
         # Vectorize the training and validation data
-        logger.info("Vectorizing training and validation data...")
+        logger.debug("Vectorizing training and validation data...")
         X_train_vectorized = vectorizer.fit_transform(X_train)
         X_val_vectorized = vectorizer.transform(X_val)
 
@@ -53,7 +53,7 @@ def main():
         X_test_vectorized = vectorizer.transform(X_test)
 
         # Initialize and train the Logistic Regression model on TRAINING data
-        logger.info("Training the Logistic Regression model...")
+        logger.debug("Training the Logistic Regression model...")
         model = LogisticRegression(max_iter=1000)
         model.fit(X_train_vectorized, y_train)
 
@@ -68,7 +68,7 @@ def main():
         logger.info(f"Validation Accuracy: {val_accuracy * 100:.1f}%")
 
         # Generate predictions for submission using the test data
-        logger.info("Generating predictions for submission...")
+        logger.debug("Generating predictions for submission...")
         y_test_pred = model.predict(X_test_vectorized)
 
         # Create a submission dataframe with predictions from test data
